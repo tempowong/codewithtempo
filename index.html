@@ -101,7 +101,7 @@
     document.getElementById('shuffleButton').addEventListener('click', () => {
         shuffledSchools = shuffle(schools);
         
-        let resultHtml = "<h2>隨機排列結果:</h2><ul>";
+        let resultHtml = "<h2>隨機排列:</h2><ul>";
         shuffledSchools.forEach((school, index) => {
             resultHtml += `<li>${index + 1} ${school}</li>`;
         });
