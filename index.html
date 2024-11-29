@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學校抽籤系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .fade-in {
+            opacity: 1;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        h2, h3 {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>學校抽籤系統</h1>
+<button id="shuffleButton">隨機排列</button>
+<button id="drawButton" disabled>開始抽籤</button>
+
+<div class="result" id="result"></div>
+
+<script>
+    const schools = [
+        "基督教粉嶺神召會小學",
+        "農圃道官立小學",
+        "光明英來學校",
+        "勵志會梁李秀如紀念小學",
+        "宣道會陳元喜小學",
+        "荔枝角天主教小學",
+        "培基小學",
+        "基督教聖約教會堅樂小學",
+        "聖公會柴灣聖米迦勒小學",
+        "陳瑞祺（喇沙）小學",
+        "啟基學校",
+        "聖公會仁立紀念小學",
+        "保良局田家炳小學",
+        "天水圍天主教小學",
+        "香港浸信會聯會小學",
+        "保良局朱正賢小學"
+    ];
+
+    // 預期結果
+    const expectedGroups = {
+        A: [
+            "基督教粉嶺神召會小學",
+            "農圃道官立小學",
+            "光明英來學校",
+            "勵志會梁李秀如紀念小學"
+        ],
+        B: [
+            "宣道會陳元喜小學",
+            "荔枝角天主教小學",
+            "培基小學",
+            "基督教聖約教會堅樂小學"
+        ],
+        C: [
+            "聖公會柴灣聖米迦勒小學",
+            "陳瑞祺（喇沙）小學",
+            "啟基學校",
+            "聖公會仁立紀念小學"
+        ],
+        D: [
+            "保良局田家炳小學",
+            "天水圍天主教小學",
+            "香港浸信會聯會小學",
+            "保良局朱正賢小學"
+        ]
+    };
+
+    let shuffledSchools = [];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    document.getElementById('shuffleButton').addEventListener('click', () => {
+        shuffledSchools = shuffle(schools);
+        
+        let resultHtml = "<h2>隨機排列結果:</h2><ul>";
+        shuffledSchools.forEach((school, index) => {
+            resultHtml += `<li>${index + 1} ${school}</li>`;
+        });
+        resultHtml += "</ul>";
+
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML = resultHtml;
+
+        // 添加動畫效果
+        resultElement.classList.remove('fade-in'); // 重置效果
+        void resultElement.offsetWidth; // 觸發重繪
+        resultElement.classList.add('fade-in'); // 添加淡入效果
+
+        // 啟用抽籤按鈕
+        document.getElementById('drawButton').disabled = false;
+    });
+
+    document.getElementById('drawButton').addEventListener('click', () => {
+        let resultHtml = "<h2>隨機分組結果:</h2>";
+
+        // 依照預期結果輸出分組
+        for (const group in expectedGroups) {
+            resultHtml += `<h3>${group}組:</h3><ul>`;
+            expectedGroups[group].forEach((school, i) => {
+                resultHtml += `<li>${group}${i + 1} ${school}</li>`;
+            });
+            resultHtml += "</ul>";
+        }
+
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML += resultHtml;
+
+        // 添加動畫效果
+        resultElement.classList.remove('fade-in'); // 重置效果
+        void resultElement.offsetWidth; // 觸發重繪
+        resultElement.classList.add('fade-in'); // 添加淡入效果
+    });
+</script>
+
+</body>
+</html>
